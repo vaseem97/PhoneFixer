@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "259493388971",
+    "project_id": "phonespare-5f9f1",
+    "storage_bucket": "phonespare-5f9f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259493388971:android:172d8c94c00f8aa442cdee",
+        "android_client_info": {
+          "package_name": "com.example.app_trp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuNLgkg0fqkg4gUJV7U25d_8v_xvrMy1Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
