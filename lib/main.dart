@@ -42,9 +42,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Email Auth Demo',
         theme: ThemeData(
+          useMaterial3: false,
           primarySwatch: Colors.blue,
         ),
-        home: const MainScreen(),
+        home: SignInPage(),
       ),
     );
   }
