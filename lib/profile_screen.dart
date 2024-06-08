@@ -1,4 +1,5 @@
 import 'package:app_trp/home_page.dart';
+import 'package:app_trp/order_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -64,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  _phoneNumber ?? 'Phone number not available',
+                  _phoneNumber ?? 'Please Login ',
                   style: TextStyle(fontSize: 16, color: Colors.grey[600]),
                 ),
                 const SizedBox(height: 20),
@@ -90,51 +91,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _buildListTile(
                   icon: Icons.shopping_bag_outlined,
                   title: 'Your orders',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const OrdersScreen()),
+                    );
+                  },
                 ),
                 _buildListTile(
                   icon: Icons.home_outlined,
                   title: 'Address book',
                   onTap: () {},
                 ),
-                const SizedBox(height: 30),
 
-                // Other Information Section
-                const Text(
-                  'OTHER INFORMATION',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 10),
-                _buildListTile(
-                  icon: Icons.share_outlined,
-                  title: 'Share the app',
-                  onTap: () {},
-                ),
-                _buildListTile(
-                  icon: Icons.info_outline,
-                  title: 'About us',
-                  onTap: () {},
-                ),
-                _buildListTile(
-                  icon: Icons.restaurant,
-                  title: 'Get Feeding India receipt',
-                  onTap: () {},
-                ),
-                _buildListTile(
-                  icon: Icons.star_border,
-                  title: 'Rate us on the Play Store',
-                  onTap: () {},
-                ),
-                _buildListTile(
-                  icon: Icons.lock_outline,
-                  title: 'Account privacy',
-                  onTap: () {},
-                ),
-                _buildListTile(
-                  icon: Icons.notifications_none_outlined,
-                  title: 'Notification preferences',
-                  onTap: () {},
-                ),
                 _buildListTile(
                   icon: Icons.power_settings_new_outlined,
                   title: 'Log out',

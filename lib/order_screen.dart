@@ -1,3 +1,4 @@
+import 'package:app_trp/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,20 +6,37 @@ import 'package:firebase_auth/firebase_auth.dart';
 class OrdersScreen extends StatelessWidget {
   const OrdersScreen({Key? key}) : super(key: key);
 
+  Future<void> _cancelOrder(String userId, String orderId) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('orders')
+        .doc(orderId)
+        .update({'orderStatus': 'Cancelled'});
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser == null) {
-      // If the user is not logged in, display a message or redirect to the login screen
-      return Scaffold(
-        appBar: AppBar(
-          title: const Text('Orders'),
-          backgroundColor: Colors.deepPurple,
-          centerTitle: true,
-          elevation: 0.0,
-        ),
-        body: const Center(
-          child: Text('Please log in to view your orders'),
+      return WillPopScope(
+        onWillPop: () async {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const ProfileScreen()),
+          );
+          return false;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Orders'),
+            backgroundColor: Colors.deepPurple,
+            centerTitle: true,
+            elevation: 0.0,
+          ),
+          body: const Center(
+            child: Text('Please log in to view your orders'),
+          ),
         ),
       );
     }
@@ -59,8 +77,7 @@ class OrdersScreen extends StatelessWidget {
               final order = orders[index];
               final orderData = order.data() as Map<String, dynamic>;
               final orderItems = orderData['cartItems'] as List<dynamic>;
-              final orderId =
-                  '${orderData['orderDate'].toDate().day}${orderData['orderDate'].toDate().month}${orderData['orderDate'].toDate().year}-${orderData['orderDate'].toDate().hour}${orderData['orderDate'].toDate().minute}${orderData['orderDate'].toDate().second}';
+              final orderId = order.id;
 
               return Card(
                 margin:
@@ -68,110 +85,133 @@ class OrdersScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0),
                 ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset:
-                            const Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Order #$orderId',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18.0,
-                                color: Colors.deepPurple,
-                              ),
+                elevation: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Order #$orderId',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                              color: Colors.deepPurple,
                             ),
-                            Text(
-                              orderData['orderDate'].toDate().toString(),
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8.0),
-                        for (var item in orderItems)
-                          ListTile(
-                            leading: Icon(Icons.shopping_cart),
-                            title: Text(
-                              '${item['partName']} - ${item['brand']} ${item['modelName']}',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            subtitle: Text('₹${item['price']}'),
                           ),
-                        Divider(),
+                          Text(
+                            orderData['orderDate'].toDate().toString(),
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8.0),
+                      Divider(),
+                      for (var item in orderItems)
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          padding: const EdgeInsets.symmetric(vertical: 4.0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                'Total Price:',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.deepPurple,
-                                ),
-                              ),
-                              Text(
-                                '₹${orderData['totalPrice']}',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.deepPurple,
+                              Icon(Icons.shopping_cart,
+                                  color: Colors.deepPurple),
+                              const SizedBox(width: 8.0),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${item['partName']} - ${item['brand']} ${item['modelName']}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text('₹${item['price']}'),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        ListTile(
-                          leading: Icon(Icons.location_on),
-                          title: Text(
-                            'Delivery Address',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.deepPurple,
+                      const SizedBox(height: 8.0),
+                      Divider(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Total Price:',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.deepPurple,
+                              ),
                             ),
-                          ),
-                          subtitle:
-                              Text(orderData['deliveryAddress'].toString()),
+                            Text(
+                              '₹${orderData['totalPrice']}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.deepPurple,
+                              ),
+                            ),
+                          ],
                         ),
-                        ListTile(
-                          leading: Icon(Icons.info),
-                          title: Text(
-                            'Status',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.deepPurple,
-                            ),
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading:
+                            Icon(Icons.location_on, color: Colors.deepPurple),
+                        title: Text(
+                          'Delivery Address',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.deepPurple,
                           ),
-                          trailing: Text(
-                            orderData['orderStatus'],
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: orderData['orderStatus'] == 'Delivered'
-                                  ? Colors.green
-                                  : Colors.deepPurple,
+                        ),
+                        subtitle: Text(orderData['deliveryAddress'].toString()),
+                      ),
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.info, color: Colors.deepPurple),
+                        title: Text(
+                          'Status',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.deepPurple,
+                          ),
+                        ),
+                        trailing: Text(
+                          orderData['orderStatus'],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: orderData['orderStatus'] == 'Delivered'
+                                ? Colors.green
+                                : orderData['orderStatus'] == 'Cancelled'
+                                    ? Colors.red
+                                    : Colors.deepPurple,
+                          ),
+                        ),
+                      ),
+                      if (orderData['orderStatus'] != 'Cancelled' &&
+                          orderData['orderStatus'] != 'Delivered')
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              _cancelOrder(currentUser.uid, orderId);
+                            },
+                            child: Text(
+                              'Cancel Order',
+                              style: TextStyle(
+                                color: Colors.red,
+                              ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                    ],
                   ),
                 ),
               );

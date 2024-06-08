@@ -17,6 +17,8 @@ class DateTimeSlotScreen extends StatefulWidget {
     required this.selectedAddress,
     required this.cartItems,
     required this.totalPrice,
+    required DateTime selectedDate,
+    required String selectedTimeSlot,
   }) : super(key: key);
 
   @override

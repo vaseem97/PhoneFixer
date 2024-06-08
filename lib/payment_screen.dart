@@ -10,7 +10,9 @@ class PaymentScreen extends StatelessWidget {
       required DateTime selectedDate,
       required String selectedTimeSlot,
       required List<CartItem> cartItems,
-      required String couponCode})
+      required String couponCode,
+      required Map<String, dynamic> selectedAddress,
+      required TimeOfDay selectedTime})
       : super(key: key);
 
   @override

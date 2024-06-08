@@ -9,6 +9,10 @@ const List<String> brandNames = [
   'Vivo',
   'Realme',
   'Motorola',
+  'Poco',
+  'Nothing',
+  'iqoo',
+  'Infinix',
 ];
 
 const cartsCollectionName = 'carts';

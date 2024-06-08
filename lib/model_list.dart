@@ -43,18 +43,12 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
           }
           final models = snapshot.data!.docs;
           return ListView.builder(
+            padding: const EdgeInsets.all(16.0),
             itemCount: models.length,
             itemBuilder: (context, index) {
               final model = models[index];
               final modelName = model['modelName'] ?? '';
               final parts = model['parts'] ?? {};
-              final lcdPrice =
-                  double.tryParse(parts['LCD']?.toString() ?? '0.0') ?? 0.0;
-              final batteryPrice =
-                  double.tryParse(parts['Battery']?.toString() ?? '0.0') ?? 0.0;
-              final backPanelPrice =
-                  double.tryParse(parts['Back Panel']?.toString() ?? '0.0') ??
-                      0.0;
 
               return GestureDetector(
                 onTap: () {
@@ -71,58 +65,58 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
                   );
                 },
                 child: Card(
-                  elevation: 6,
-                  margin: const EdgeInsets.all(8),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            modelName,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                  elevation: 4,
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: const DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/demo.png'), // Fixed image path
+                              fit: BoxFit.fitHeight,
                             ),
                           ),
                         ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'LCD: ${formatCurrency(lcdPrice, 'INR')}',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Row(
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Battery: ${formatCurrency(batteryPrice, 'INR')}',
-                                  style: const TextStyle(fontSize: 14),
+                              Text(
+                                modelName,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
                                 ),
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Back Panel: ${formatCurrency(backPanelPrice, 'INR')}',
-                                  style: const TextStyle(fontSize: 14),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Tap to view parts',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.deepPurple,
                                 ),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.deepPurple,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );
