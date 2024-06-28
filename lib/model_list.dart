@@ -1,9 +1,9 @@
+// lib/model_details_screen.dart
 import 'package:app_trp/cart_screen.dart';
-import 'package:app_trp/constants.dart';
-import 'package:app_trp/parts_details_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'parts_details_screen.dart';
 
 class ModelDetailsScreen extends StatefulWidget {
   final String brand;
@@ -22,9 +22,9 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('${widget.brand} Models'),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
-        elevation: 0.0,
+        scrolledUnderElevation: 4.0, // Add elevation when scrolled under
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
@@ -94,26 +94,27 @@ class _ModelDetailsScreenState extends State<ModelDetailsScreen> {
                             children: [
                               Text(
                                 modelName,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge
+                                    ?.copyWith(
+                                        // Use TextTheme
+
+                                        ),
                               ),
                               const SizedBox(height: 8),
                               Text(
                                 'Tap to view parts',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.deepPurple,
-                                ),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium, // Use TextTheme
                               ),
                             ],
                           ),
                         ),
                         Icon(
                           Icons.arrow_forward_ios,
-                          color: Colors.deepPurple,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ],
                     ),

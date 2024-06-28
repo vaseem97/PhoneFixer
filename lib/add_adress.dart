@@ -133,10 +133,10 @@ class _AddressInputScreenState extends State<AddressInputScreen> {
                   if (_formKey.currentState!.validate()) {
                     final address = {
                       'name': _nameController.text,
+                      'phoneNumber': _phoneNumberController.text,
                       'address1': _address1Controller.text,
                       'address2': _address2Controller.text,
                       'postalCode': _postalCodeController.text,
-                      'phoneNumber': _phoneNumberController.text,
                     };
                     widget.onSave(address);
                     Navigator.pop(context);

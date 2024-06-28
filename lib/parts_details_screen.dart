@@ -49,8 +49,8 @@ class PartsDetailsScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('${brand} ${modelName} Parts'),
-          backgroundColor: Colors.deepPurple,
+          title: Text('$brand $modelName Parts'),
+          backgroundColor: Theme.of(context).colorScheme.primary,
           centerTitle: true,
           elevation: 0.0,
         ),
@@ -95,91 +95,112 @@ class PartsDetailsScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.deepPurple.shade50,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primaryContainer,
                             ),
                             child: Icon(
                               iconData,
-                              color: Colors.deepPurple.shade600,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onPrimaryContainer,
                             ),
                           ),
-                          title: Row(children: [
-                            Expanded(
-                              child: Text(
-                                partName,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black87,
+                          title: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  partName,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                      ),
                                 ),
                               ),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.info_outline),
-                              color: Colors.deepPurple,
-                              tooltip: 'Part Use Case & Warranty Info',
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      title: Row(
-                                        children: [
-                                          Icon(Icons.info_outline,
-                                              color: Colors.deepPurple),
-                                          SizedBox(width: 8),
-                                          Expanded(child: Text(partName)),
-                                        ],
-                                      ),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: <Widget>[
-                                            Text(
-                                              'Use Case:',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.deepPurple,
-                                              ),
-                                            ),
-                                            Text(partDescription
-                                                .split(' Warranty: ')[0]),
-                                            SizedBox(height: 16),
-                                            Text(
-                                              'Warranty:',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.deepPurple,
-                                              ),
-                                            ),
-                                            Text(partDescription
-                                                .split(' Warranty: ')[1]),
+                              IconButton(
+                                icon: const Icon(Icons.info_outline),
+                                color: Theme.of(context).colorScheme.primary,
+                                tooltip: 'Part Use Case & Warranty Info',
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        title: Row(
+                                          children: [
+                                            Icon(Icons.info_outline,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primary),
+                                            const SizedBox(width: 8),
+                                            Expanded(child: Text(partName)),
                                           ],
                                         ),
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          style: TextButton.styleFrom(
-                                            foregroundColor: Colors.deepPurple,
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: <Widget>[
+                                              Text(
+                                                'Use Case:',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                ),
+                                              ),
+                                              Text(partDescription
+                                                  .split(' Warranty: ')[0]),
+                                              const SizedBox(height: 16),
+                                              Text(
+                                                'Warranty:',
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                ),
+                                              ),
+                                              Text(partDescription
+                                                  .split(' Warranty: ')[1]),
+                                            ],
                                           ),
-                                          child: Text('Got it'),
                                         ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                            )
-                          ]),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            style: TextButton.styleFrom(
+                                              foregroundColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                            ),
+                                            child: const Text('Got it'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                           subtitle: Text(
                             formattedPrice,
                             style: TextStyle(
                               color: partPrice.isNegative
-                                  ? Colors.red
-                                  : Colors.black54,
+                                  ? Theme.of(context).colorScheme.error
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .onSurfaceVariant,
                             ),
                           ),
                           trailing: ElevatedButton(
@@ -214,20 +235,24 @@ class PartsDetailsScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               backgroundColor: isPartInCart
-                                  ? Colors.red.shade100
-                                  : Colors.deepPurple.shade50,
+                                  ? Theme.of(context).colorScheme.errorContainer
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer,
                               elevation: 0,
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 10,
-                              ),
+                                  horizontal: 20, vertical: 10),
                             ),
                             child: Text(
                               isPartInCart ? 'Remove' : 'Add',
                               style: TextStyle(
                                 color: isPartInCart
-                                    ? Colors.red.shade600
-                                    : Colors.deepPurple.shade600,
+                                    ? Theme.of(context)
+                                        .colorScheme
+                                        .onErrorContainer
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .onPrimaryContainer,
                               ),
                             ),
                           ),
@@ -243,10 +268,10 @@ class PartsDetailsScreen extends StatelessWidget {
                 return cartProvider.cartItems.isNotEmpty
                     ? Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.surface,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.shade300,
+                              color: Theme.of(context).colorScheme.shadow,
                               spreadRadius: 1,
                               blurRadius: 10,
                             ),
@@ -254,9 +279,7 @@ class PartsDetailsScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
+                            horizontal: 16, vertical: 8),
                         margin: const EdgeInsets.all(16),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -266,10 +289,12 @@ class PartsDetailsScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   'Total: ${formatCurrency(cartProvider.totalAmount, 'INR')}',
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                 ),
                                 const SizedBox(height: 4),
                                 const Text(
@@ -291,14 +316,13 @@ class PartsDetailsScreen extends StatelessWidget {
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.deepPurple,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 20,
-                                  vertical: 10,
-                                ),
+                                    horizontal: 20, vertical: 10),
                               ),
                               child: const Text(
                                 'Proceed',

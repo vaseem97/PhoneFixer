@@ -123,6 +123,7 @@ class CartScreen extends StatelessWidget {
                 innerColor: Colors.white,
                 onSubmit: () {
                   saveOrderToFirestore(context, cartProvider);
+                  return null;
                 },
               ),
             ),

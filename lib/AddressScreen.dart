@@ -70,7 +70,7 @@ class _AddressScreenState extends State<AddressScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DateTimeSlotScreen(
+          builder: (context) => CheckoutPage(
             selectedAddress: _selectedAddress!,
             selectedDate: _selectedDate!,
             selectedTimeSlot: _selectedTimeSlot!,
@@ -131,36 +131,22 @@ class _AddressScreenState extends State<AddressScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Address"),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
         elevation: 0.0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : SingleChildScrollView(
               child: Column(
                 children: [
-                  // Progress Indicator
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildProgressIndicator(
-                            'Cart', Icons.shopping_cart, true),
-                        _buildProgressIndicator(
-                            'Address', Icons.home, _selectedAddress != null),
-                        _buildProgressIndicator(
-                            'Payment',
-                            Icons.payment,
-                            _selectedAddress != null &&
-                                _selectedDate != null &&
-                                _selectedTimeSlot != null),
-                      ],
-                    ),
-                  ),
-                  const Divider(),
                   // Address Section
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -168,18 +154,13 @@ class _AddressScreenState extends State<AddressScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Row(
-                          children: [
-                            Icon(Icons.home, color: Colors.deepPurple),
-                            SizedBox(width: 10),
-                            Text(
-                              'Select Address',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          'Select Address',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                         const SizedBox(height: 10),
                         _savedAddresses.isEmpty
@@ -203,10 +184,12 @@ class _AddressScreenState extends State<AddressScreen> {
                                           ),
                                         );
                                       },
-                                      child: const Text('Add New Address'),
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.deepPurple,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
                                       ),
+                                      child: const Text('Add New Address'),
                                     ),
                                   ],
                                 ),
@@ -239,9 +222,10 @@ class _AddressScreenState extends State<AddressScreen> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      color: Colors.deepPurpleAccent,
-                                      child: const Padding(
-                                        padding: EdgeInsets.symmetric(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 10.0, vertical: 15),
                                         child: Row(
                                           mainAxisAlignment:
@@ -249,13 +233,17 @@ class _AddressScreenState extends State<AddressScreen> {
                                           children: [
                                             Icon(
                                               Icons.location_on,
-                                              color: Colors.white,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onPrimary,
                                             ),
-                                            SizedBox(width: 10),
+                                            const SizedBox(width: 10),
                                             Text(
                                               'Choose Another Address',
                                               style: TextStyle(
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
                                               ),
@@ -270,21 +258,15 @@ class _AddressScreenState extends State<AddressScreen> {
                         const SizedBox(height: 20),
                         const Divider(),
                         // Book Slot Section
-                        const Row(
-                          children: [
-                            Icon(Icons.event, color: Colors.deepPurple),
-                            SizedBox(width: 10),
-                            Text(
-                              'Book Slot',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          'Select Date',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                         const SizedBox(height: 10),
-                        // Date Selection
                         const Text(
                           'Date',
                           style: TextStyle(fontSize: 16),
@@ -293,9 +275,13 @@ class _AddressScreenState extends State<AddressScreen> {
                         _buildDateSelectionRow(),
                         const SizedBox(height: 20),
                         // Time Slot Selection
-                        const Text(
-                          'Time Slot',
-                          style: TextStyle(fontSize: 16),
+                        Text(
+                          'Select Time',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                         const SizedBox(height: 10),
                         _buildTimeSlotSelectionRow(),
@@ -315,18 +301,20 @@ class _AddressScreenState extends State<AddressScreen> {
                                 _selectedTimeSlot == null)
                             ? null
                             : _proceedToPaymentScreen,
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
                         child: const Text(
                           'Proceed',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          backgroundColor: Colors.deepPurple,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -335,39 +323,6 @@ class _AddressScreenState extends State<AddressScreen> {
                 ],
               ),
             ),
-    );
-  }
-
-  Widget _buildProgressIndicator(String text, IconData icon, bool isActive) {
-    return Column(
-      children: [
-        Container(
-          width: 30,
-          height: 30,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: isActive ? Colors.deepPurple : Colors.grey[300],
-            border: Border.all(
-              color: isActive ? Colors.deepPurple : Colors.grey[300]!,
-              width: 2,
-            ),
-          ),
-          child: Center(
-            child: Icon(
-              icon,
-              color: isActive ? Colors.white : Colors.grey[600],
-              size: 18,
-            ),
-          ),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          text,
-          style: TextStyle(
-            color: isActive ? Colors.deepPurple : Colors.grey[600],
-          ),
-        ),
-      ],
     );
   }
 
@@ -396,13 +351,16 @@ class _AddressScreenState extends State<AddressScreen> {
         }
       },
       child: Container(
-        width: 60,
-        height: 55,
+        width: 70,
+        height: 60,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: isSelected ? Colors.deepPurple : Colors.white,
+          color:
+              isSelected ? Theme.of(context).colorScheme.primary : Colors.white,
           border: Border.all(
-            color: isSelected ? Colors.deepPurple : Colors.grey[300]!,
+            color: isSelected
+                ? Theme.of(context).colorScheme.primary
+                : Colors.grey[300]!,
             width: 1,
           ),
         ),
@@ -462,14 +420,16 @@ class _AddressScreenState extends State<AddressScreen> {
         }
       },
       child: Container(
-        width: (MediaQuery.of(context).size.width / 2) -
-            30, // Adjust width for two slots per row
-        height: 45,
+        width: (MediaQuery.of(context).size.width / 2) - 30,
+        height: 55,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: isSelected ? Colors.deepPurple : Colors.white,
+          color:
+              isSelected ? Theme.of(context).colorScheme.primary : Colors.white,
           border: Border.all(
-            color: isSelected ? Colors.deepPurple : Colors.grey[300]!,
+            color: isSelected
+                ? Theme.of(context).colorScheme.primary
+                : Colors.grey[300]!,
             width: 1,
           ),
           boxShadow: [
@@ -516,8 +476,9 @@ class _AddressScreenState extends State<AddressScreen> {
             ),
           ],
           border: Border.all(
-            color:
-                _selectedAddress == address ? Colors.deepPurple : Colors.white,
+            color: _selectedAddress == address
+                ? Theme.of(context).colorScheme.primary
+                : Colors.white,
             width: 2,
           ),
         ),
@@ -526,9 +487,9 @@ class _AddressScreenState extends State<AddressScreen> {
           children: [
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.person,
-                  color: Colors.deepPurple,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 const SizedBox(width: 10),
                 Text(
@@ -536,7 +497,7 @@ class _AddressScreenState extends State<AddressScreen> {
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    color: Colors.deepPurple,
+                    color: Colors.black,
                   ),
                 ),
               ],
@@ -544,16 +505,16 @@ class _AddressScreenState extends State<AddressScreen> {
             const SizedBox(height: 10),
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.phone,
-                  color: Colors.deepPurple,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 const SizedBox(width: 10),
                 Text(
                   'Mobile: ${address['phoneNumber'] ?? ''}',
                   style: const TextStyle(
                     fontSize: 16,
-                    color: Colors.deepPurple,
+                    color: Colors.black,
                   ),
                 ),
               ],
@@ -562,9 +523,9 @@ class _AddressScreenState extends State<AddressScreen> {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(
+                Icon(
                   Icons.location_on,
-                  color: Colors.deepPurple,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 const SizedBox(width: 10),
                 Expanded(
@@ -575,7 +536,7 @@ class _AddressScreenState extends State<AddressScreen> {
                         address['address1'] ?? '',
                         style: const TextStyle(
                           fontSize: 16,
-                          color: Colors.deepPurple,
+                          color: Colors.black,
                         ),
                       ),
                       if (address['address2'] != null &&
@@ -584,7 +545,7 @@ class _AddressScreenState extends State<AddressScreen> {
                           address['address2'] ?? '',
                           style: const TextStyle(
                             fontSize: 16,
-                            color: Colors.deepPurple,
+                            color: Colors.black,
                           ),
                         ),
                     ],
@@ -595,16 +556,16 @@ class _AddressScreenState extends State<AddressScreen> {
             const SizedBox(height: 10),
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.local_post_office,
-                  color: Colors.deepPurple,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
                 const SizedBox(width: 10),
                 Text(
                   '${address['postalCode']}',
                   style: const TextStyle(
                     fontSize: 16,
-                    color: Colors.deepPurple,
+                    color: Colors.black,
                   ),
                 ),
               ],

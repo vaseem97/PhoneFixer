@@ -30,6 +30,10 @@ class CartItem {
     };
   }
 
+  Map<String, dynamic> toJson() {
+    return toMap();
+  }
+
   static CartItem fromMap(Map<String, dynamic> map) {
     return CartItem(
       brand: map['brand'],

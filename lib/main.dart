@@ -1,3 +1,4 @@
+import 'package:app_trp/colors.dart';
 import 'package:app_trp/home_page.dart';
 import 'package:app_trp/cart_screen.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +42,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Email Auth Demo',
-        theme: ThemeData(
-          useMaterial3: false,
-          primarySwatch: Colors.blue,
-        ),
+        theme: AppTheme.theme,
         home: SignInPage(),
       ),
     );
